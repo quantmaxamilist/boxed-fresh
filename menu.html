@@ -198,20 +198,33 @@ footer{background:var(--green-d);color:#cfd8cd;padding:56px 0 28px;margin-top:8p
 .macmodal{position:fixed;inset:0;z-index:200;display:flex;align-items:center;justify-content:center;padding:24px}
 .macmodal[hidden]{display:none}
 .macmodal-bg{position:absolute;inset:0;background:rgba(20,30,20,.55);backdrop-filter:blur(3px)}
-.macmodal-card{position:relative;background:var(--white);border-radius:24px;max-width:460px;width:100%;padding:34px 34px 30px;box-shadow:0 40px 80px -30px rgba(20,30,15,.6);animation:macpop .25s ease}
+.macmodal-card{position:relative;background:var(--white);border-radius:24px;max-width:720px;width:100%;overflow:hidden;box-shadow:0 40px 80px -30px rgba(20,30,15,.6);animation:macpop .25s ease}
 @keyframes macpop{from{opacity:0;transform:translateY(16px) scale(.98)}to{opacity:1;transform:none}}
-.macmodal-x{position:absolute;top:14px;right:16px;background:none;border:0;font-size:1.9rem;line-height:1;color:var(--muted);cursor:pointer;padding:4px 8px;border-radius:8px}
-.macmodal-x:hover{color:var(--green);background:var(--beige)}
-.macmodal-card h3{font-size:1.5rem;margin-bottom:16px;padding-right:30px;color:var(--green)}
+.macmodal-x{position:absolute;top:14px;right:16px;z-index:3;background:rgba(255,255,255,.9);border:0;font-size:1.6rem;line-height:1;color:var(--ink);cursor:pointer;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;box-shadow:0 4px 12px -4px rgba(0,0,0,.3)}
+.macmodal-x:hover{color:var(--green);background:#fff}
+.mac-flex{display:flex;align-items:stretch}
+.mac-photo{flex:0 0 46%;background:var(--beige);min-height:360px}
+.mac-photo img{width:100%;height:100%;object-fit:cover}
+.mac-photo.placeholder{display:grid;place-items:center;gap:.6rem;text-align:center;background:linear-gradient(160deg,#efe4d0,#e3d3b8);color:var(--green)}
+.mac-photo.placeholder svg{width:56px;height:56px;stroke-width:1.3;opacity:.85}
+.mac-photo.placeholder small{font-weight:700;font-size:.78rem;letter-spacing:.06em;color:#8a7a5c;text-transform:uppercase}
+.mac-content{flex:1;padding:30px 32px 30px;min-width:0}
+.mac-content h3{font-size:1.5rem;margin-bottom:.25em;padding-right:24px;color:var(--green);line-height:1.1}
+.mac-desc{color:var(--muted);font-size:.95rem;margin-bottom:18px}
 .mac-tbl{width:100%;border-collapse:collapse;margin-bottom:4px}
-.mac-tbl th{font-family:var(--b);font-weight:700;font-size:.78rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);text-align:right;padding:0 0 10px}
+.mac-tbl th{font-family:var(--b);font-weight:700;font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);text-align:right;padding:0 0 8px}
 .mac-tbl th:first-child{text-align:left}
-.mac-tbl td{padding:11px 0;border-top:1px solid var(--line);font-size:1rem;text-align:right;font-weight:700;font-family:var(--h)}
+.mac-tbl td{padding:10px 0;border-top:1px solid var(--line);font-size:1rem;text-align:right;font-weight:700;font-family:var(--h)}
 .mac-tbl td:first-child{text-align:left;font-family:var(--b);font-weight:600;color:var(--muted)}
 .mac-tbl.single td{font-size:1.05rem}
-.mac-all{margin-top:16px;font-size:.92rem;color:var(--ink)}
+.mac-all{margin-top:16px;font-size:.9rem;color:var(--ink)}
 .mac-all b{color:var(--green)}
-.mac-note{margin-top:8px;font-size:.8rem;color:var(--muted)}
+.mac-note{margin-top:8px;font-size:.78rem;color:var(--muted)}
+@media(max-width:640px){
+  .mac-flex{flex-direction:column}
+  .mac-photo{flex:auto;min-height:0;height:190px}
+  .mac-content{padding:24px 24px 26px}
+}
 
 @media(max-width:960px){
   .hero-grid,.deliv-grid,.split,.split.rev{grid-template-columns:1fr}
@@ -354,14 +367,18 @@ document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
   </div>
 </div>
 <script>
-const BF_MACROS={"rigatoni": {"name": "Beef Meatball Rigatoni", "type": "dual", "med": [600, 55, 55, 18, 6], "lg": [765, 65, 60, 27, 9], "all": "Gluten, Dairy, Sulphites, Tree nuts, Celery"}, "honeychicken": {"name": "Honey Garlic Chilli & Lime Chicken", "type": "dual", "med": [550, 45, 55, 14, 6], "lg": [700, 65, 65, 20, 9], "all": "Dairy"}, "prawns": {"name": "Salt & Pepper King Prawns", "type": "dual", "med": [550, 50, 40, 14, 5], "lg": [650, 60, 60, 19, 8], "all": "Shellfish, Sesame, Soya, Mustard"}, "lamb": {"name": "Persian Lamb Stew", "type": "dual", "med": [500, 45, 50, 17, 6], "lg": [620, 50, 55, 20, 8], "all": "Dairy, Sulphites, Celery"}, "korma": {"name": "Chicken Korma", "type": "dual", "med": [550, 50, 55, 16, 4], "lg": [650, 55, 60, 20, 8], "all": "Mustard, Nuts"}, "bourbon": {"name": "Sticky Bourbon Chicken", "type": "single", "single": [400, 40, 30, 11, 5], "all": ""}, "noodle": {"name": "Sweet Chilli Chicken Noodle Pot", "type": "single", "single": [420, 40, 40, 12, 3], "all": "Gluten, Sesame, Soya, Egg"}, "waffles": {"name": "Birthday Cake Waffles", "type": "single", "single": [380, 38, 35, 7, 5], "all": "Dairy, Egg, Gluten"}, "frenchtoast": {"name": "Nutella & Banana French Toast", "type": "single", "single": [340, 35, 28, 2, 4], "all": "Dairy, Nuts, Eggs, Gluten"}};
+const BF_MACROS={"rigatoni": {"name": "Beef Meatball Rigatoni", "desc": "Rich tomato &amp; mozzarella sauce with green pesto and toasted pine nuts.", "type": "dual", "med": [600, 55, 55, 18, 6], "lg": [765, 65, 60, 27, 9], "all": "Gluten, Dairy, Sulphites, Tree nuts, Celery"}, "honeychicken": {"name": "Honey Garlic Chilli &amp; Lime Chicken", "desc": "Served with basmati rice and a fresh peach salsa.", "type": "dual", "med": [550, 45, 55, 14, 6], "lg": [700, 65, 65, 20, 9], "all": "Dairy"}, "prawns": {"name": "Salt &amp; Pepper King Prawns", "desc": "Served with egg fried rice and a rich curry sauce.", "type": "dual", "med": [550, 50, 40, 14, 5], "lg": [650, 60, 60, 19, 8], "all": "Shellfish, Sesame, Soya, Mustard"}, "lamb": {"name": "Persian Lamb Stew", "desc": "Fragrant citrus rice and harissa pomegranate yoghurt.", "type": "dual", "med": [500, 45, 50, 17, 6], "lg": [620, 50, 55, 20, 8], "all": "Dairy, Sulphites, Celery"}, "korma": {"name": "Chicken Korma", "desc": "Pilau rice, toasted almonds, fresh chilli and coriander.", "type": "dual", "med": [550, 50, 55, 16, 4], "lg": [650, 55, 60, 20, 8], "all": "Mustard, Nuts"}, "bourbon": {"name": "Sticky Bourbon Chicken", "desc": "Coated in a sweet, smoky and sticky glaze.", "type": "single", "single": [400, 40, 30, 11, 5], "all": ""}, "noodle": {"name": "Sweet Chilli Chicken Noodle Pot", "desc": "Tossed with crunchy vegetables in a sticky Asian-style dressing.", "type": "single", "single": [420, 40, 40, 12, 3], "all": "Gluten, Sesame, Soya, Egg"}, "waffles": {"name": "Birthday Cake Waffles", "desc": "Finished with a sweet butter icing drizzle.", "type": "single", "single": [380, 38, 35, 7, 5], "all": "Dairy, Egg, Gluten"}, "frenchtoast": {"name": "Nutella &amp; Banana French Toast", "desc": "Finished with a crunchy hazelnut topping.", "type": "single", "single": [340, 35, 28, 2, 4], "all": "Dairy, Nuts, Eggs, Gluten"}};
 (function(){
   const m=document.getElementById('macmodal'); if(!m) return;
   const inner=document.getElementById('mac-inner');
+  const CHEF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 13.5V20h12v-6.5"/><path d="M5 13.5a3 3 0 01-.4-6A4 4 0 0112 5a4 4 0 017.4 2.5 3 3 0 01-.4 6z"/><path d="M6 17h12"/></svg>';
   function row(l,a,b){return '<tr><td>'+l+'</td><td>'+a+'</td>'+(b!==undefined?'<td>'+b+'</td>':'')+'</tr>';}
-  function open(key){
+  function open(key,img){
     const d=BF_MACROS[key]; if(!d) return;
-    let h='<h3 id="mac-name">'+d.name+'</h3>';
+    let photo = img ? '<div class="mac-photo"><img src="'+img+'" alt="'+d.name+'"></div>'
+                    : '<div class="mac-photo placeholder">'+CHEF+'<small>Photo coming</small></div>';
+    let h='<div class="mac-content"><h3 id="mac-name">'+d.name+'</h3>'
+        + (d.desc?'<p class="mac-desc">'+d.desc+'</p>':'');
     if(d.type==='dual'){
       h+='<table class="mac-tbl"><thead><tr><th></th><th>Medium</th><th>Large</th></tr></thead><tbody>';
       const M=d.med,L=d.lg;
@@ -382,13 +399,14 @@ const BF_MACROS={"rigatoni": {"name": "Beef Meatball Rigatoni", "type": "dual", 
       h+='</tbody></table>';
     }
     h+='<p class="mac-all"><b>Allergens:</b> '+(d.all?d.all:'None listed')+'</p>';
-    h+='<p class="mac-note">Nutrition is approximate and per portion. Menu rotates weekly.</p>';
-    inner.innerHTML=h; m.hidden=false; document.body.style.overflow='hidden';
+    h+='<p class="mac-note">Nutrition is approximate and per portion. Menu rotates weekly.</p></div>';
+    inner.innerHTML='<div class="mac-flex">'+photo+h+'</div>'; m.hidden=false; document.body.style.overflow='hidden';
   }
   function close(){m.hidden=true; document.body.style.overflow='';}
   document.querySelectorAll('[data-macros]').forEach(el=>{
-    el.addEventListener('click',()=>open(el.getAttribute('data-macros')));
-    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();open(el.getAttribute('data-macros'));}});
+    const go=()=>{const im=el.querySelector('img'); open(el.getAttribute('data-macros'), im?im.src:null);};
+    el.addEventListener('click',go);
+    el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go();}});
   });
   m.querySelectorAll('[data-close]').forEach(b=>b.addEventListener('click',close));
   document.addEventListener('keydown',e=>{if(e.key==='Escape')close();});
