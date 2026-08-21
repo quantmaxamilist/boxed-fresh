@@ -43,6 +43,16 @@ nav{display:flex;align-items:center;justify-content:space-between;height:74px}
 .nav-links a:hover::after,.nav-links a.active::after{width:100%}
 .nav-links a.active{color:var(--green)}
 .nav-cta{display:flex;align-items:center;gap:1.2rem}
+.burger{display:none;background:none;border:0;cursor:pointer;color:var(--green);padding:6px;margin-left:6px}
+.burger svg{width:30px;height:30px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round}
+.mobile-menu{position:fixed;top:0;right:0;bottom:0;height:auto;width:min(82vw,330px);background:var(--cream);z-index:120;transform:translateX(105%);transition:transform .3s ease;box-shadow:-14px 0 46px -22px rgba(0,0,0,.5);padding:88px 30px 30px;display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;gap:2px}
+.mm-on .mobile-menu{transform:none}
+.mobile-menu a:not(.btn){padding:15px 2px;font-family:var(--h);font-weight:700;font-size:1.35rem;color:var(--ink);border-bottom:1px solid var(--line)}
+.mobile-menu a.active{color:var(--green)}
+.mobile-menu .btn{margin-top:22px;justify-content:center}
+.mm-backdrop{position:fixed;inset:0;background:rgba(18,28,18,.45);z-index:110;opacity:0;pointer-events:none;transition:opacity .3s}
+.mm-on .mm-backdrop{opacity:1;pointer-events:auto}
+body.mm-on{overflow:hidden}
 
 .hero{position:relative;overflow:hidden;padding:64px 0 40px}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:40px;align-items:center}
@@ -246,19 +256,31 @@ footer{background:var(--green-d);color:#cfd8cd;padding:56px 0 28px;margin-top:8p
 .annote{position:absolute;z-index:5;pointer-events:none;max-width:230px}
 .annote .hand{font-family:var(--hand);font-weight:700;font-size:1.85rem;line-height:1;display:block}
 .annote svg{fill:none;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
-.a1{top:-2%;left:-6%;transform:rotate(-7deg)}
+.a1{top:-9%;left:1%;transform:rotate(-7deg)}
 .a1 .hand{color:var(--green)}
-.a1 svg{stroke:var(--gold);width:120px;height:64px;margin:2px 0 0 42px}
+.a1 svg{stroke:var(--gold);width:135px;height:78px;margin:4px 0 0 44px}
 .a2{bottom:2%;right:-7%;text-align:right;transform:rotate(5deg)}
 .a2 .hand{color:var(--gold)}
 .a2 svg{stroke:var(--green);width:120px;height:60px;margin-left:auto;margin-right:36px;display:block}
 .hand-underline{display:inline-block;position:relative}
 .hand-underline svg{position:absolute;left:-4%;bottom:-16px;width:108%;height:16px;stroke:var(--gold);stroke-width:3;fill:none;stroke-linecap:round}
 
+/* hand-drawn "our chefs" cluster (GIKF-style) */
+.whychef{position:relative}
+.chef-cluster{position:absolute;top:30px;right:5%;z-index:6;display:flex;flex-direction:column;align-items:center;gap:6px;text-decoration:none;transform:rotate(-3deg);transition:transform .25s}
+.chef-cluster:hover{transform:rotate(-3deg) translateY(-4px)}
+.cc-title{font-family:var(--hand);font-weight:700;font-size:2rem;color:var(--green);line-height:1}
+.cc-avatars{display:flex}
+.cc-av{width:56px;height:56px;border-radius:50%;border:3px solid var(--green);background:var(--beige);overflow:hidden;margin-left:-12px;box-shadow:0 6px 12px -5px rgba(40,30,15,.5)}
+.cc-av:first-child{margin-left:0}
+.cc-av img{width:100%;height:100%;object-fit:cover}
+.cc-cta{font-family:var(--hand);font-weight:700;font-size:1.4rem;color:var(--gold);display:flex;align-items:center;gap:.3em}
+.cc-cta svg{width:40px;height:15px;stroke:var(--gold);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+
 /* meet the chefs */
 .chefs{display:grid;grid-template-columns:1fr 1fr;gap:44px;max-width:900px;margin:0 auto}
 .chef-card{text-align:center}
-.chef-card .pic{width:230px;height:230px;margin:0 auto 24px;border-radius:50%;padding:6px;background:var(--white);box-shadow:0 0 0 3px var(--gold),0 24px 40px -22px rgba(40,30,15,.5);position:relative}
+.chef-card .pic{width:220px;height:220px;margin:0 auto 24px;border-radius:50%;padding:6px;background:var(--white);box-shadow:0 0 0 3px var(--gold),0 24px 40px -22px rgba(40,30,15,.5);position:relative}
 .chef-card .pic::after{content:'';position:absolute;inset:6px;border-radius:50%;border:3px solid var(--green)}
 .chef-card .pic img{width:100%;height:100%;object-fit:cover;border-radius:50%;position:relative;z-index:1;background:var(--beige)}
 .chef-card .kicker{font-family:var(--hand);font-weight:700;font-size:1.5rem;color:var(--gold);line-height:1}
@@ -276,10 +298,17 @@ footer{background:var(--green-d);color:#cfd8cd;padding:56px 0 28px;margin-top:8p
 .pedigree span{display:flex;align-items:center;gap:.5em}
 .pedigree .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
 
+@media(max-width:840px){
+  .nav-links,.nav-cta{display:none}
+  .burger{display:block}
+}
 @media(max-width:960px){
   .hero-grid,.deliv-grid,.split,.split.rev{grid-template-columns:1fr}
   .chefs{grid-template-columns:1fr;gap:40px}
   .annote{display:none}
+  .whychef{padding-top:44px}
+  .chef-cluster{position:static;transform:none;margin:0 auto 34px;order:-1}
+  .chef-cluster:hover{transform:translateY(-4px)}
   .hero-art{min-height:340px;margin-top:10px}
   .feat,.feat.cols3,.steps{grid-template-columns:repeat(2,1fr)}
   .plan-grid{grid-template-columns:1fr}
@@ -310,8 +339,17 @@ footer{background:var(--green-d);color:#cfd8cd;padding:56px 0 28px;margin-top:8p
     <div class="nav-cta">
       <a class="btn btn-p" href="https://www.cognitoforms.com/TheBoxedFreshCompany/TheBoxedFreshMealsCoWeeklyMealPrepOrder" target="_blank" rel="noopener">Order for Sunday <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
     </div>
+    <button class="burger" aria-label="Open menu" onclick="document.body.classList.toggle('mm-on')"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </nav></div>
 </header>
+<div class="mm-backdrop" onclick="document.body.classList.remove('mm-on')"></div>
+<nav class="mobile-menu" aria-label="Mobile">
+  <a href="index.html">Home</a>
+  <a href="menu.html" class="active">Menu</a>
+  <a href="how-it-works.html">How it works</a>
+  <a href="about.html">About</a>
+  <a class="btn btn-p" href="https://www.cognitoforms.com/TheBoxedFreshCompany/TheBoxedFreshMealsCoWeeklyMealPrepOrder" target="_blank" rel="noopener">Order for Sunday <svg class="ico" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+</nav>
 <section class="subhero reveal in">
   <div class="wrap">
     <p class="crumb"><a href="index.html">Home</a> / Menu</p>
